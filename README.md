@@ -1,6 +1,6 @@
 # 🌿 AgroConexão
 
-**AgroConexão** é um projeto digital interativo desenvolvido por **Edis Eduardo Buturi**, estudante do 3º ano do Ensino Médio, como parte da participação no **Programa Agrinho 2025**. Este site foi criado com o objetivo de mostrar como a educação, a tecnologia e o agronegócio podem caminhar juntos para transformar realidades e cultivar um futuro mais justo, sustentável e conectado.
+**AgroConexão** é um projeto digital interativo desenvolvido por **Edis Eduardo Buturi**, estudante do 3º ano do Ensino Médio, como parte da participação no **Programa Agrinho 2025**. Este site foi criado para mostrar como **educação, tecnologia e agronegócio** podem caminhar juntos, cultivando um futuro **mais justo, sustentável e conectado**.
 
 ---
 

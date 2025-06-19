@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agro Pong – Guardião da Água</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde: #2e7d32;
+      --verde-claro: #81c784;
+      --azul: #4fc3f7;
+      --vermelho: #e53935;
+      --claro: #f1f8e9;
+      --escuro: #212121;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--claro);
+      color: var(--verde);
+      text-align: center;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.escuro {
+      background: var(--escuro);
+      color: #f1f8e9;
+    }
+
+    h1 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    #intro {
+      max-width: 500px;
+      margin: 2rem auto; /* Adjusted top margin */
+      padding: 2.5rem; /* Increased padding */
+      background: #ffffff;
+      border-radius: 15px;
+      border: 2px solid var(--verde-claro); /* Added a border */
+      box-shadow: 0 0 12px rgba(0,0,0,0.25); /* Slightly stronger shadow */
+    }
+
+    body.escuro #intro {
+      background: #333;
+      border-color: #555;
+    }
+
+    #intro h2 {
+      margin-bottom: 1.2rem; /* Slightly increased margin */
+    }
+
+    #intro p {
+      font-size: 1.1rem;
+      line-height: 1.6; /* Improved readability */
+      margin-bottom: 1.8rem; /* Slightly increased margin */
+    }
+
+    .botao {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      background: var(--verde-claro);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smoother transition */
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15); /* Added a subtle shadow to buttons */
+    }
+
+    .botao:hover {
+      background: var(--verde);
+      transform: translateY(-2px); /* Slight lift on hover */
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Enhanced shadow on hover */
+    }
+
+    
+    #jogo {
+      display: none;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 600px;
+      margin: 1.5rem auto; /* Slightly increased top margin */
+      background: #fff;
+      border: 3px solid var(--verde-claro);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for the game area */
+    }
+
+    body.escuro #jogo {
+      background: #2b2b2b;
+      border-color: #555;
+      box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+    }
+
+    #regador {
+      position: absolute;
+      bottom: 10px;
+      width: 80px;
+      height: 40px;
+      background: var(--verde-claro);
+      border-radius: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: left 0.1s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .gota {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Subtle shadow for droplets */
+    }
+
+    .agua { background: var(--azul); }
+    .veneno {
+      background: #39FF14; /* Neon Green */
+      box-shadow: 0 0 8px #39FF14, 0 0 16px rgba(57, 255, 20, 0.6); /* Glowing effect */
+    }
+
+    #hud {
+      display: none;
+      margin: 1rem auto;
+      font-size: 1rem;
+      color: var(--verde); /* Ensure HUD text color is consistent */
+    }
+
+    body.escuro #hud {
+      color: #f1f8e9;
+    }
+
+    #vidas {
+      font-size: 1.3rem;
+    }
+
+    #mensagem {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .perdeu {
+      color: var(--verde);
+      font-size: 1.2rem;
+      background: #e8f5e9;
+      display: inline-block;
+      padding: 2rem; /* Increased padding */
+      border-radius: 15px; /* Slightly more rounded */
+      border: 2px solid var(--verde-claro); /* Added a border */
+      box-shadow: 0 6px 10px rgba(0,0,0,0.2); /* More pronounced shadow */
+      max-width: 380px; /* Slightly wider */
+      margin: 2rem auto; /* Increased margin */
+      line-height: 1.6; /* Improved readability */
+      text-align: center; /* Center the content inside */
+    }
+
+    body.escuro .perdeu {
+        background: #424242;
+        color: #f1f8e9;
+        border-color: #555;
+        box-shadow: 0 6px 10px rgba(255,255,255,0.08);
+    }
+
+    .perdeu h2 {
+        color: var(--vermelho);
+        margin-top: 0;
+        margin-bottom: 1rem; /* Increased margin */
+    }
+
+    .perdeu p {
+        margin-bottom: 0.8rem; /* Increased margin */
+    }
+
+    .perdeu .botao {
+        margin-top: 1.8rem; /* Increased margin */
+        padding: 12px 26px; /* Slightly wider buttons */
+        font-size: 1.1rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem; /* Slightly increased margin */
+    }
+
+    .top-bar button {
+      font-size: 0.9rem;
+    }
+
+    /* Ranking table styles */
+    .ranking-container {
+      margin-top: 2rem; /* Increased top margin */
+      border-top: 2px solid var(--verde-claro); /* Thicker border */
+      padding-top: 1.5rem; /* Increased padding */
+    }
+
+    .ranking-container h3 {
+      color: var(--verde);
+      margin-bottom: 1rem; /* Increased margin */
+    }
+
+    body.escuro .ranking-container h3 {
+        color: #f1f8e9;
+    }
+
+    .ranking-container ol {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      width: 95%; /* Slightly wider */
+      max-width: 300px; /* Increased max width */
+      text-align: left;
+      border: 1px solid var(--verde-claro);
+      border-radius: 10px; /* More rounded */
+      background: #fdfdfd;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1); /* Slightly enhanced shadow */
+    }
+
+    body.escuro .ranking-container ol {
+        background: #3a3a3a;
+        border-color: #555;
+        box-shadow: 0 3px 6px rgba(255,255,255,0.05);
+    }
+
+    .ranking-container li {
+      padding: 10px 20px; /* Increased padding */
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem; /* Slightly larger font */
+    }
+
+    body.escuro .ranking-container li {
+        border-bottom-color: #444;
+    }
+
+    .ranking-container li:last-child {
+      border-bottom: none;
+    }
+
+    .ranking-container li:nth-child(odd) {
+      background: #f9f9f9;
+    }
+
+    body.escuro .ranking-container li:nth-child(odd) {
+        background: #333;
+    }
+
+    .ranking-container li b {
+      color: var(--verde);
+    }
+
+    body.escuro .ranking-container li b {
+        color: var(--verde-claro);
+    }
+
+    .ranking-container li span {
+      font-weight: bold;
+      color: var(--azul);
+    }
+
+    .ranking-container li:nth-child(1) b,
+    .ranking-container li:nth-child(1) span {
+        color: gold;
+        font-size: 1.1em;
+    }
+    .ranking-container li:nth-child(2) b,
+    .ranking-container li:nth-child(2) span {
+        color: silver;
+        font-size: 1.05em;
+    }
+    .ranking-container li:nth-child(3) b,
+    .ranking-container li:nth-child(3) span {
+        color: #cd7f32; /* Bronze */
+        font-size: 1.02em;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="intro">
+    <h2>🌿 Bem-vindo ao Agro Pong!</h2>
+    <p>
+      Mova o regador com as setas do teclado ⬅️ ➡️<br>
+      Colete gotas de água 💧 e evite o <span style="color: #39FF14; font-weight: bold;">veneno</span> ☠️.<br>
+      Você tem <b>3 vidas ❤️</b> — chegue o mais longe que puder!
+    </p>
+    <input type="text" id="nick" placeholder="Digite seu nick" style="padding:10px;border-radius:10px;border:1px solid #ccc;margin-bottom:1rem;width:100%;max-width:300px;"><br>
+    <button class="botao" onclick="iniciarJogo()">🎮 Começar Jogo</button>
+
+    <div id="introRanking" class="ranking-container">
+      <h3>🏆 Ranking Atual:</h3>
+      <ol></ol>
+    </div>
+  </div>
+
+  <h1 style="display:none;">Agro Pong – Guardião da Água</h1>
+
+  <div class="top-bar" id="menu" style="display:none;">
+    <button onclick="voltarInicio()">🏡 Voltar para Início</button>
+    <button class="botao" onclick="alternarModo()">🌗 Modo Claro/Escuro</button>
+    <button class="botao" onclick="reiniciar()">🔄 Reiniciar</button>
+  </div>
+
+  <div id="hud">
+    <div>🌟 Pontos: <span id="pontos">0</span> | 🏆 Recorde: <span id="recorde">0</span></div>
+    <div id="vidas">❤️❤️❤️</div>
+  </div>
+
+  <div id="jogo">
+    <div id="regador"></div>
+  </div>
+
+  <p id="mensagem"></p>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const jogo = document.getElementById('jogo');
+    const regador = document.getElementById('regador');
+    const pontosEl = document.getElementById('pontos');
+    const recordeEl = document.getElementById('recorde');
+    const vidasEl = document.getElementById('vidas');
+    const mensagem = document.getElementById('mensagem');
+    const titulo = document.querySelector('h1');
+    const hud = document.getElementById('hud');
+    const menu = document.getElementById('menu');
+    const introRankingList = document.querySelector('#introRanking ol');
+
+
+    let pontos = 0;
+    let nick = '';
+    let ranking = JSON.parse(localStorage.getItem("rankingAgro")) || [];
+    let vidas = 3;
+    let velocidade = 5;
+    let intervalo;
+    let recorde = localStorage.getItem("recordeAgro") || 0;
+    recordeEl.textContent = recorde;
+
+    // Set initial regador position (corrected for potential width changes)
+    let regadorX = (jogo.clientWidth / 2) - (regador.clientWidth / 2);
+
+
+    function iniciarJogo() {
+      const nickInput = document.getElementById('nick');
+      if (!nickInput.value.trim()) {
+        alert("Por favor, digite seu nick!");
+        return;
+      }
+      nick = nickInput.value.trim();
+      intro.style.display = "none";
+      titulo.style.display = "block";
+      menu.style.display = "flex";
+      hud.style.display = "block";
+      jogo.style.display = "block";
+
+      intervalo = setInterval(criarGota, 900);
+    }
+
+    function alternarModo() {
+      document.body.classList.toggle('escuro');
+    }
+
+    function reiniciar() {
+      location.reload();
+    }
+
+    // Function to navigate back to inicio.html
+    function voltarParaInicio() {
+        window.location.href = 'inicio.html';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') regadorX -= 30;
+      if (e.key === 'ArrowRight') regadorX += 30;
+      regadorX = Math.max(0, Math.min(regadorX, jogo.clientWidth - regador.clientWidth));
+      regador.style.left = regadorX + 'px';
+    });
+
+    function criarGota() {
+      const gota = document.createElement('div');
+      const tipo = Math.random() < 0.75 ? 'agua' : 'veneno';
+      gota.classList.add('gota', tipo);
+      gota.style.left = Math.random() * (jogo.clientWidth - 24) + 'px';
+      jogo.appendChild(gota);
+
+      let y = 0;
+      const queda = setInterval(() => {
+        y += velocidade;
+        gota.style.top = y + 'px';
+
+        const gotaRect = gota.getBoundingClientRect();
+        const regadorRect = regador.getBoundingClientRect();
+
+        if (y > jogo.clientHeight - 60 &&
+            gotaRect.left < regadorRect.right &&
+            gotaRect.right > regadorRect.left) {
+
+          if (tipo === 'agua') {
+            pontos++;
+            pontosEl.textContent = pontos;
+            velocidade += 0.05;
+          } else {
+            vidas--;
+            atualizarVidas();
+            if (vidas <= 0) encerrarJogo();
+          }
+
+          gota.remove();
+          clearInterval(queda);
+        }
+
+        if (y > jogo.clientHeight) {
+          if (tipo === 'agua') {
+            vidas--;
+            atualizarVidas();
+            if (vidas <= 0) encerrarJogo();
+          }
+          gota.remove();
+          clearInterval(queda);
+        }
+      }, 30);
+    }
+
+    function atualizarVidas() {
+      const coracoes = [];
+      for (let i = 0; i < vidas; i++) {
+        coracoes.push('❤️');
+      }
+      while (coracoes.length < 3) {
+          coracoes.push('🤍');
+      }
+      vidasEl.textContent = coracoes.join('');
+    }
+
+    function renderRanking(targetElement) {
+        let textoRanking = ``;
+        if (ranking.length === 0) {
+            textoRanking = `<p style="text-align:center; padding: 10px;">Nenhum ranking ainda.</p>`;
+        } else {
+            ranking.forEach((j, i) => {
+                textoRanking += `<li><b>${i + 1}. ${j.nick}</b> <span>${j.pontos} pts</span></li>`;
+            });
+        }
+        targetElement.innerHTML = textoRanking;
+    }
+
+    function encerrarJogo() {
+      clearInterval(intervalo);
+
+      let novoRecorde = false;
+      if (pontos > recorde) {
+        localStorage.setItem("recordeAgro", pontos);
+        novoRecorde = true;
+        recorde = pontos;
+      }
+
+      const existingPlayerIndex = ranking.findIndex(player => player.nick === nick);
+
+      if (existingPlayerIndex > -1) {
+          if (pontos > ranking[existingPlayerIndex].pontos) {
+              ranking[existingPlayerIndex].pontos = pontos;
+          }
+      } else {
+          ranking.push({ nick, pontos });
+      }
+
+      ranking.sort((a, b) => b.pontos - a.pontos);
+      ranking = ranking.slice(0, 10);
+      localStorage.setItem("rankingAgro", JSON.stringify(ranking));
+
+      let endRankingHtml = ``;
+      if (ranking.length > 0) {
+        endRankingHtml += `<div class="ranking-container"><h3>🏅 Ranking:</h3><ol>`;
+        ranking.forEach((j, i) => {
+            endRankingHtml += `<li><b>${i + 1}. ${j.nick}</b> <span>${j.pontos} pts</span></li>`;
+        });
+        endRankingHtml += `</ol></div>`;
+      } else {
+          endRankingHtml = `<div class="ranking-container"><p style="text-align:center;">Nenhum ranking ainda.</p></div>`;
+      }
+
+      // --- START: NEW CONGRATULATORY MESSAGE LOGIC ---
+      let congratsMessage = '';
+      if (pontos >= 500) {
+          congratsMessage = `<p style="color: var(--verde); font-weight: bold; margin-bottom: 1rem;">Parabéns, ${nick}! Você alcançou uma pontuação excelente!</p>`;
+      }
+      // --- END: NEW CONGRATULATORY MESSAGE LOGIC ---
+
+
+      mensagem.innerHTML = `
+        <div class='perdeu'>
+          <h2>💀 Fim de jogo!</h2>
+          <p>Pontuação final: <b>${pontos}</b></p>
+          <p>Recorde anterior: <b>${recordeEl.textContent}</b></p>
+          ${novoRecorde ? "<p>🎉 Novo recorde pessoal!</p>" : ""}
+          ${congratsMessage} <br>
+          ${endRankingHtml}
+          <button class="botao" onclick="reiniciar()">Jogar Novamente</button>
+          <button class="botao" onclick="voltarParaInicio()">Voltar para o Início</button>
+        </div>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderRanking(introRankingList);
+        regadorX = (jogo.clientWidth / 2) - (regador.clientWidth / 2);
+        regador.style.left = regadorX + 'px';
+    });
+
+    function voltarInicio() {
+      window.location.href = "inicio.html";
+    }
+  </script>
+
+</body>
+</html>

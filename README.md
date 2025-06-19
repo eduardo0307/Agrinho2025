@@ -45,22 +45,27 @@ Conectar o campo e a cidade por meio de um site interativo que:
 
 ## 🖥️ Recursos e Funcionalidades
 
-- ✅ Tela inicial animada de boas-vindas (capa.html)
+- ✅ Tela inicial animada de boas-vindas (index.html)
 - ✅ Cadastro e login com `localStorage` (sem necessidade de servidor)
 - ✅ Interface moderna com design responsivo e acessibilidade
 - ✅ Navegação por abas com conteúdo dividido por temas:
   - Início
   - Tema Agrinho 2025
-  - Histórias de produtores reais
-  - Tecnologias aplicadas ao campo
-  - Linha do tempo da evolução do agro
-  - Galeria de imagens
+  - Festas
+  - Histórias 
+  - Tecnologias 
+  - Linha do tempo 
+  - Curiosidades
+  - Mini Jogos
+  - Quiz
+  - Galeria 
   - Depoimentos
-  - Contato e redes sociais
-  - Quiz interativo sobre agronegócio
+  - Sobre Nós
+  - Referência
+  - Contato
 - ✅ Modo escuro/claro
 - ✅ Integração com WhatsApp e Instagram
-- ✅ Envio de mensagens (com EmailJS ou FormSubmit)
+- ✅ Envio de mensagens (FormSubmit)
 - ✅ Comentários sobre fontes e referências oficiais
 
 ---

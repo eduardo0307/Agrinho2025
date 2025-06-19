@@ -81,6 +81,26 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* Enhanced shadow on hover */
     }
 
+    .botao-voltar {
+      background: var(--verde-claro);
+  color: white;
+  padding: 12px 26px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: none;
+}
+
+.botao-voltar:hover {
+  background-color: rgb(28, 131, 2);
+  transform: scale(1.05);
+}
     
     #jogo {
       display: none;
@@ -310,7 +330,7 @@
   <h1 style="display:none;">Agro Pong – Guardião da Água</h1>
 
   <div class="top-bar" id="menu" style="display:none;">
-    <button onclick="voltarInicio()">🏡 Voltar para Início</button>
+    <button class="botao-voltar" onclick="voltarParaInicio()">🏠 Voltar para o Início</button>
     <button class="botao" onclick="alternarModo()">🌗 Modo Claro/Escuro</button>
     <button class="botao" onclick="reiniciar()">🔄 Reiniciar</button>
   </div>

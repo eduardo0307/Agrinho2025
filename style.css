@@ -452,6 +452,25 @@ nav.nav-buttons::-webkit-scrollbar {
   background-color: #689f38;
 }
 
+/* === Estilos para modo escuro === */
+body.dark-mode .jogo-card {
+  background-color: #1e1e1e;
+  border-color: #4caf50;
+  color: var(--color-text);
+}
+
+body.dark-mode .jogo-card h3 {
+  color: var(--color-white);
+}
+
+body.dark-mode .jogar-btn {
+  background-color: #66bb6a;
+  color: #ffffff;
+}
+
+body.dark-mode .jogar-btn:hover {
+  background-color: #43a047;
+}
   /* =========================================
    ESTILOS ADICIONAIS PARA SEÇÃO 'DEPOIMENTOS'
    ========================================= */
@@ -1096,7 +1115,7 @@ nav.nav-buttons::-webkit-scrollbar {
       text-align: center;
       color: #4e342e;
     }
-    
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -1644,4 +1663,29 @@ body.dark-mode #ranking-list li {
 .voltar-topo-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.section-festa {
+  background: linear-gradient(to bottom, #fff8e1, #fff3e0);
+}
+.section-jogos {
+  background: #f1f8e9;
+}
+
+/* Fundo escuro no modo escuro */
+body.dark-mode .section-festa {
+  background: linear-gradient(to bottom, #1e1e1e, #121212);
+}
+
+body.dark-mode .section-jogos {
+  background: #1a1a1a;
+}
+
+body.dark-mode .evento-caixa p,
+body.dark-mode .jogo-card p {
+  color: var(--color-text);
+}
+
+body.dark-mode .jogo-card h3 {
+  color: var(--color-white);
 }
